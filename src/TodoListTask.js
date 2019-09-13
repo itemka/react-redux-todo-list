@@ -1,27 +1,30 @@
 import React from 'react';
 import './App.css';
+import {connect} from "react-redux";
 
 class TodoListTask extends React.Component {
 
     onIsDoneChanged = (e) => {
         this.props.changeStatus(this.props.task.id, e.currentTarget.checked);
-    }
+    };
 
     onTitleChanged = (e) => {
-        this.props.changeTitle(this.props.task.id, e.currentTarget.value);
-    }
+        // this.props.changeTitle(this.props.task.id, e.currentTarget.value);
+        console.log(this.props.tasksId)
+        this.props.changeTitle(this.props.tasksId,this.props.task.id, e.currentTarget.value);
+    };
 
     state = {
         editMode: false
-    }
+    };
 
     activateEditMode = () => {
         this.setState({editMode: true});
-    }
+    };
 
     deactivateEditMode= () => {
         this.setState({editMode: false});
-    }
+    };
 
 
     render = () => {
@@ -41,5 +44,15 @@ class TodoListTask extends React.Component {
     }
 }
 
-export default TodoListTask;
+const mapStateToProps = state => {
+    return {}
+};
+const mapDispatchToProps = dispatch => {
+    return {
+        changeTitle: (tasksId, taskId, changeValue) => dispatch({type: 'CHANGE_TITLE_TASK', tasksId, taskId, changeValue})
+    }
+};
+
+const ConnectTodoListTask = connect(mapStateToProps, mapDispatchToProps)(TodoListTask);
+export default ConnectTodoListTask;
 
