@@ -20,7 +20,8 @@ const initialState = {
                 {id: 0, title: "afdg", isDone: false, priority: "low"},
             ]
         }
-    ]
+    ],
+    buttonTitle: 'X'
 };
 
 const ToDoListsReducer = (state = initialState, action) => {
@@ -46,12 +47,12 @@ const ToDoListsReducer = (state = initialState, action) => {
         case `CHANGE_TITLE_TASK`: {
             return {
                 ...state,
-                todolists: state.todolists.map(item=>{
+                todolists: state.todolists.map(item => {
                     if (item.id === action.tasksId)
-                        return{
-                            ...item, tasks: item.tasks.map(task=>{
+                        return {
+                            ...item, tasks: item.tasks.map(task => {
                                 if (task.id === action.taskId)
-                                    return{
+                                    return {
                                         ...task, title: action.changeValue
                                     };
                                 else
@@ -63,11 +64,36 @@ const ToDoListsReducer = (state = initialState, action) => {
                 })
             }
         }
+        case `DELETE_TASK`: {
+            return {
+                ...state,
+                todolists: state.todolists.map(item => {
+                    if (item.id === action.tasksId) {
+                        return {
+                            ...item,
+                            tasks: item.tasks.filter(task => {
+                                if (task.id !== action.taskId) return true;
+                                else return false;
+                            })
+                        }
+                    } else {
+                        return item;
+                    }
+                })
+            }
+        }
+        case `DELETE_LIST_TASK`: {
+            return {
+                ...state,
+                todolists: state.todolists.filter(listTask => {
+                    if (listTask.id !== action.tasksId) return true;
+                    else return false;
+                })
+            }
+        }
         default:
             return state
     }
-    ;
-
     return state;
 };
 

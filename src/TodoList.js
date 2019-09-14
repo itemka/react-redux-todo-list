@@ -102,7 +102,7 @@ class TodoList extends React.Component {
 
             <div className="todoList">
                 <div className="todoList-header">
-                    <TodoListTitle title={this.props.title}/>
+                    <TodoListTitle title={this.props.title} tasksId={this.props.id}/>
                     <AddNewItemForm addItem={this.addTask}/>
                 </div>
 

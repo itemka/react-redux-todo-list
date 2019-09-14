@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import {connect} from "react-redux";
+import Button from "./Button";
 
 class TodoListTask extends React.Component {
 
@@ -39,17 +40,21 @@ class TodoListTask extends React.Component {
                         ? <input onBlur={this.deactivateEditMode} onChange={this.onTitleChanged} autoFocus={true} value={this.props.task.title} />
                         : <span onClick={this.activateEditMode}>{this.props.task.id} - {this.props.task.title}</span>
                     }, priority: {this.props.task.priority}
+                    <Button buttonCallBack={()=>this.props.deleteTask(this.props.tasksId, this.props.task.id)} title={this.props.buttonTitle}/>
                 </div>
         );
     }
 }
 
 const mapStateToProps = state => {
-    return {}
+    return {
+        buttonTitle: state.buttonTitle
+    }
 };
 const mapDispatchToProps = dispatch => {
     return {
-        changeTitle: (tasksId, taskId, changeValue) => dispatch({type: 'CHANGE_TITLE_TASK', tasksId, taskId, changeValue})
+        changeTitle: (tasksId, taskId, changeValue) => dispatch({type: 'CHANGE_TITLE_TASK', tasksId, taskId, changeValue}),
+        deleteTask: (tasksId, taskId) => dispatch({type: 'DELETE_TASK', tasksId: tasksId, taskId: taskId})
     }
 };
 
