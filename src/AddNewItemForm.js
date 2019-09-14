@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import Button from "./Button";
 
 class AddNewItemForm extends React.Component {
     state = {
@@ -18,6 +19,7 @@ class AddNewItemForm extends React.Component {
         //     this.props.addItem(newText);
         // }
         this.props.addItem(e.currentTarget.value);
+        console.log(e.currentTarget.value);
     };
 
     onTitleChanged = (e) => {
@@ -30,20 +32,22 @@ class AddNewItemForm extends React.Component {
     onKeyPress = (e) => {
         if (e.key === "Enter") {
             // this.onAddItemClick();
+
             this.props.addItem(e.currentTarget.value);
+            console.log(e.currentTarget.value)
         }
     };
 
     render = () => {
         let classNameForInput = this.state.error ? "error" : "";
         return (
-            <div className="todoList-newTaskForm">
-                <input className={classNameForInput} type="text" placeholder="New item name"
+            <div className={`todoList-newTaskForm center`}>
+                <input className={`classNameForInput`} type="text" placeholder="New item name"
                        onChange={this.onTitleChanged}
                        onKeyPress={this.onKeyPress}
                        value={this.state.title}
                 />
-                <button onClick={this.props.onAddItemClick}>Add</button>
+                <Button buttonCallBack={this.onAddItemClick} title={`Add`}/>
             </div>
 
         );

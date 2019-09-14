@@ -35,7 +35,7 @@ const ToDoListsReducer = (state = initialState, action) => {
         }
         case `ADD_TASK`: {
             return {
-                ...state,
+                 ...state,
                 todolists: state.todolists.map(item => {
                     if (item.id === action.todolistId)
                         return {...item, tasks: [...item.tasks, action.newTask]};
@@ -88,6 +88,28 @@ const ToDoListsReducer = (state = initialState, action) => {
                 todolists: state.todolists.filter(listTask => {
                     if (listTask.id !== action.tasksId) return true;
                     else return false;
+                })
+            }
+        }
+        case `CHANGE_ISDONE`:{
+            return {
+                ...state,
+                todolists: state.todolists.map(item => {
+                    if (item.id === action.tasksId)
+                        return {
+                            ...item,
+                            tasks: item.tasks.map(task => {
+                                if (task.id === action.taskId) {
+                                    return {
+                                        ...task, isDone: action.changeIsDone
+                                    };
+                                }
+                                else
+                                    return task;
+                            })
+                        };
+                    else
+                        return item;
                 })
             }
         }

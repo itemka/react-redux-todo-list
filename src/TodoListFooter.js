@@ -1,5 +1,5 @@
 import React from 'react';
-import '../src/App.css';
+import './App.css';
 
 class TodoListFooter extends React.Component {
 
@@ -21,14 +21,14 @@ class TodoListFooter extends React.Component {
 
         return (
             <div className="todoList-footer">
-                { !this.state.isHidden && <div>
+                { !this.state.isHidden && <div className={`center`}>
                      <button onClick={ this.onAllFilterClick } className={classForAll}>All</button>
                      <button onClick={ this.onCompletedFilterClick } className={classForCompleted}>Completed</button>
                      <button onClick={ this.onActiveFilterClick } className={classForActive}>Active</button>
                   </div>
                 }
-                { !this.state.isHidden && <span onClick={ this.onShowFiltersClick }>hide</span> }
-                { this.state.isHidden && <span onClick={ this.onHideFiltersClick }>show</span> }
+                { !this.state.isHidden && <span onClick={ this.onShowFiltersClick }>Hide</span> }
+                { this.state.isHidden && <span onClick={ this.onHideFiltersClick }>Show</span> }
             </div>
         );
     }

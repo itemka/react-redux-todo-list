@@ -57,7 +57,7 @@ class App extends React.Component {
                                                                        tasks={todoList.tasks}/>);
         return (
             <>
-                <div>
+                <div className={`center`}>
                     <AddNewItemForm addItem={this.props.addTodoList}/>
                 </div>
                 <div className="App">

@@ -7,9 +7,11 @@ class TodoListTitle extends React.Component {
     render = () => {
         return (
             <div>
-                <h3 className="todoList-header__title">{this.props.title}</h3>
-                <Button buttonCallBack={() => this.props.deleteListTask(this.props.tasksId)}
+                <h3 className={`todoList-header_title center`}>{this.props.title}
+                    <Button
+                        buttonCallBack={() => this.props.deleteListTask(this.props.tasksId)}
                         title={this.props.buttonTitle}/>
+                </h3>
             </div>
         );
     }
