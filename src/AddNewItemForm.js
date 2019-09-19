@@ -18,8 +18,9 @@ class AddNewItemForm extends React.Component {
         //     console.log(this.props);
         //     this.props.addItem(newText);
         // }
-        this.props.addItem(e.currentTarget.value);
-        console.log(e.currentTarget.value);
+            this.props.addItem(e.currentTarget.value);
+            console.log(e.currentTarget.value);
+
     };
 
     onTitleChanged = (e) => {
@@ -32,7 +33,6 @@ class AddNewItemForm extends React.Component {
     onKeyPress = (e) => {
         if (e.key === "Enter") {
             // this.onAddItemClick();
-
             this.props.addItem(e.currentTarget.value);
             console.log(e.currentTarget.value)
         }
@@ -47,7 +47,7 @@ class AddNewItemForm extends React.Component {
                        onKeyPress={this.onKeyPress}
                        value={this.state.title}
                 />
-                <Button buttonCallBack={this.onAddItemClick} title={`Add`}/>
+                <Button buttonCallBack={this.onAddItemClick.bind(this)} title={`Add`}/>
             </div>
 
         );
