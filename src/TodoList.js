@@ -5,6 +5,7 @@ import TodoListFooter from "./TodoListFooter";
 import TodoListTitle from "./TodoListTitle";
 import AddNewItemForm from "./AddNewItemForm";
 import {connect} from "react-redux";
+import {AddTask} from "./Redux/Reduser";
 
 class TodoList extends React.Component {
 
@@ -132,7 +133,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
     return {
-        addTask: (newTask, todolistId) => dispatch({type: 'ADD_TASK', newTask, todolistId})
+        addTask: (newTask, todolistId) => dispatch(AddTask(newTask, todolistId))
     }
 };
 
