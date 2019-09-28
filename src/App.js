@@ -28,6 +28,17 @@ class App extends React.Component {
         this.nextTodoListId++;
     };
 
+    _addTodoList = (title) => {
+        let newTodoList = {
+            id: this.nextTodoListId,
+            title: title
+        };
+        this.setState({todolists: [...this.state.todolists, newTodoList]}, () => {
+            this.saveState();
+        });
+        this.nextTodoListId++;
+    };
+
 
     saveState = () => {
         // переводим объект в строку
