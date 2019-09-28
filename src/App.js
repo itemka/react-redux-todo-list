@@ -17,6 +17,10 @@ class App extends React.Component {
     };
 
     addTodoList = (title) => {
+
+    };
+
+    _addTodoList = (title) => {
         let newTodoList = {
             id: this.nextTodoListId,
             title: title
