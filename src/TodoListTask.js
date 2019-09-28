@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import {connect} from "react-redux";
 import Button from "./Button";
-import {ChangeIsDone, ChangeTitleTask, DeleteTask} from "./Redux/Reduser";
+import {changeIsDone, changeTitleTask, deleteTask} from "./Redux/Reduser";
 
 class TodoListTask extends React.Component {
 
@@ -60,9 +60,9 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
     return {
-        changeTitle: (tasksId, taskId, changeValue) => dispatch(ChangeTitleTask(tasksId, taskId, changeValue)),
-        deleteTask: (tasksId, taskId) => dispatch(DeleteTask(tasksId, taskId)),
-        changeIsDone: (tasksId, taskId, changeIsDone) => dispatch(ChangeIsDone(tasksId, taskId, changeIsDone))
+        changeTitle: (tasksId, taskId, changeValue) => dispatch(changeTitleTask(tasksId, taskId, changeValue)),
+        deleteTask: (tasksId, taskId) => dispatch(deleteTask(tasksId, taskId)),
+        changeIsDone,
     }
 };
 

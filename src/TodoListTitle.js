@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import Button from "./Button";
 import {connect} from "react-redux";
-import {DeleteListTask} from "./Redux/Reduser";
+import {deleteListTask} from "./Redux/Reduser";
 
 class TodoListTitle extends React.Component {
     render = () => {
@@ -25,7 +25,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
     return {
-        deleteListTask: tasksId => dispatch(DeleteListTask(tasksId))
+        deleteListTask: tasksId => dispatch(deleteListTask(tasksId))
     }
 };
 

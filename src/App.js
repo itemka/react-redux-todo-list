@@ -3,9 +3,13 @@ import './App.css';
 import TodoList from "./TodoList";
 import AddNewItemForm from "./AddNewItemForm";
 import {connect} from "react-redux";
-import {AddTodoList} from "./Redux/Reduser";
+import {addTodoList, setTodoLists} from "./Redux/Reduser";
+import axios from "axios";
 
 class App extends React.Component {
+    componentDidMount() {
+        this.restoreState();
+    }
 
     nextTodoListId = 0;
     state = {
@@ -23,9 +27,6 @@ class App extends React.Component {
         this.nextTodoListId++;
     };
 
-    componentDidMount() {
-        this.restoreState();
-    }
 
     saveState = () => {
         // переводим объект в строку
@@ -33,7 +34,18 @@ class App extends React.Component {
         // сохраняем нашу строку в localStorage под ключом "our-state"
         localStorage.setItem("todolists-state", stateAsString);
     };
+
     restoreState = () => {
+        axios
+            .get(
+                `https://social-network.samuraijs.com/api/1.0/todo-lists`,
+                {withCredentials: true, headers: {"API-KEY": "326adc8b-48be-4905-a33d-14875af1c491"}}
+            )
+            .then(response => {
+                this.props.setTodoLists(response.data)
+            })
+    };
+    _restoreState = () => {
         // объявляем наш стейт стартовый
         let state = this.state;
         // считываем сохранённую ранее строку из localStorage
@@ -54,7 +66,8 @@ class App extends React.Component {
     };
 
     render = () => {
-        let todolists = this.props.todolists.map(todoList => <TodoList key={todoList.id} id={todoList.id} title={todoList.title}
+        let todolists = this.props.todolists.map(todoList => <TodoList key={todoList.id} id={todoList.id}
+                                                                       title={todoList.title}
                                                                        tasks={todoList.tasks}/>);
         return (
             <>
@@ -77,8 +90,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         addTodoList: newTodoList => {
-            dispatch(AddTodoList(newTodoList));
-        }
+            dispatch(addTodoList(newTodoList));
+        },
+        setTodoLists: todoLists => dispatch(setTodoLists(todoLists)),
     }
 };
 

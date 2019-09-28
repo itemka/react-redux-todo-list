@@ -5,7 +5,8 @@ import TodoListFooter from "./TodoListFooter";
 import TodoListTitle from "./TodoListTitle";
 import AddNewItemForm from "./AddNewItemForm";
 import {connect} from "react-redux";
-import {AddTask} from "./Redux/Reduser";
+import {addTask, setTasks} from "./Redux/Reduser";
+import axios from 'axios';
 
 class TodoList extends React.Component {
 
@@ -13,7 +14,7 @@ class TodoList extends React.Component {
         super(props);
         this.newTasksTitileRef = React.createRef();
     }
-
+b
     componentDidMount() {
         this.restoreState();
     }
@@ -24,7 +25,19 @@ class TodoList extends React.Component {
         // сохраняем нашу строку в localStorage под ключом "our-state"
         localStorage.setItem("our-state-" + this.props.id, stateAsString);
     };
+
     restoreState = () => {
+        axios
+            .get(
+                `https://social-network.samuraijs.com/api/1.0/todo-lists/${this.props.id}/tasks`,
+                {withCredentials: true, headers: {"API-KEY": "326adc8b-48be-4905-a33d-14875af1c491"}}
+            )
+            .then(respons=>{
+                this.props.setTasks(this.props.id, respons.data.items);
+            })
+    };
+
+    _restoreState = () => {
         // объявляем наш стейт стартовый
         let state = this.state;
         // считываем сохранённую ранее строку из localStorage
@@ -97,8 +110,9 @@ class TodoList extends React.Component {
         this.changeTask(taskId, {title: title});
     };
 
-    render = () => {
 
+    render = () => {
+        const {tasks = []} = this.props;
         return (
 
             <div className="todoList">
@@ -110,7 +124,7 @@ class TodoList extends React.Component {
                 <TodoListTasks changeStatus={this.changeStatus}
                                changeTitle={this.changeTitle}
                                tasksId={this.props.id}
-                               tasks={this.props.tasks.filter(t => {
+                               tasks={tasks.filter(t => {
                                    if (this.state.filterValue === "All") {
                                        return true;
                                    }
@@ -133,7 +147,8 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
     return {
-        addTask: (newTask, todolistId) => dispatch(AddTask(newTask, todolistId))
+        addTask: (newTask, todolistId) => dispatch(addTask(newTask, todolistId)),
+        setTasks: (todolistId, tasks) => dispatch(setTasks(todolistId, tasks)),
     }
 };
 
