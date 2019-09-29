@@ -17,6 +17,7 @@
   border-radius: 4px;
 }
 .taskText{
+  font-size: 1.3em;
   width: 200px;
 }
 .buttonIntoTodoListFooter{
@@ -40,7 +41,10 @@
 }
 
 .todoList-task {
-
+  vertical-align: middle;
+}
+.priority{
+  font-size: 0.7em;
 }
 
 .todoList-task.done {

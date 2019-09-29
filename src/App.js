@@ -11,6 +11,8 @@ class App extends React.Component {
         this.restoreState();
     }
 
+
+
     nextTodoListId = 0;
     state = {
         todolists: []
@@ -18,14 +20,13 @@ class App extends React.Component {
 
 
     addTodoList = (title) => {
-        let newTodoList = {
-            id: this.nextTodoListId,
-            title: title
-        };
-        this.setState({todolists: [...this.state.todolists, newTodoList]}, () => {
-            this.saveState();
-        });
-        this.nextTodoListId++;
+        axios.post(
+            `https://social-network.samuraijs.com/api/1.0/todo-lists`,
+            {title: title},
+            {withCredentials: true, headers: {"API-KEY": "326adc8b-48be-4905-a33d-14875af1c491"}})
+            .then(response => {
+                this.props.addTodoList(response.data.data.item);
+            })
     };
 
     _addTodoList = (title) => {
@@ -33,12 +34,11 @@ class App extends React.Component {
             id: this.nextTodoListId,
             title: title
         };
-        this.setState({todolists: [...this.state.todolists, newTodoList]}, () => {
-            this.saveState();
-        });
-        this.nextTodoListId++;
+        // this.setState({todolists: [...this.state.todolists, newTodoList]}, () => {
+        //     this.saveState();
+        // });
+        // this.nextTodoListId++;
     };
-
 
     saveState = () => {
         // переводим объект в строку
@@ -47,14 +47,13 @@ class App extends React.Component {
         localStorage.setItem("todolists-state", stateAsString);
     };
 
+
     restoreState = () => {
-        axios
-            .get(
-                `https://social-network.samuraijs.com/api/1.0/todo-lists`,
-                {withCredentials: true, headers: {"API-KEY": "326adc8b-48be-4905-a33d-14875af1c491"}}
-            )
+        axios.get(
+            `https://social-network.samuraijs.com/api/1.0/todo-lists`,
+            {withCredentials: true})
             .then(response => {
-                this.props.setTodoLists(response.data)
+                this.props.setTodoLists(response.data);
             })
     };
     _restoreState = () => {
@@ -78,13 +77,12 @@ class App extends React.Component {
     };
 
     render = () => {
-        let todolists = this.props.todolists.map(todoList => <TodoList key={todoList.id} id={todoList.id}
-                                                                       title={todoList.title}
-                                                                       tasks={todoList.tasks}/>);
+        let todolists = this.props.todolists.map(tl => <TodoList id={tl.id} title={tl.title} tasks={tl.tasks}/>);
+
         return (
             <>
                 <div className={`center`}>
-                    <AddNewItemForm addItem={this.props.addTodoList}/>
+                    <AddNewItemForm addItem={this.addTodoList.bind(this)}/>
                 </div>
                 <div className="App">
                     {todolists}
@@ -94,20 +92,18 @@ class App extends React.Component {
     }
 }
 
+
 const mapStateToProps = state => {
     return {
-        todolists: state.todolists
+        todolists: state.todolists,
     }
 };
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        addTodoList: newTodoList => {
-            dispatch(addTodoList(newTodoList));
-        },
-        setTodoLists: todoLists => dispatch(setTodoLists(todoLists)),
+        addTodoList: (newTodoList) => dispatch(addTodoList(newTodoList)),
+        setTodoLists: (todoLists) => dispatch(setTodoLists(todoLists)),
     }
 };
-
 const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
 export default ConnectedApp;
 

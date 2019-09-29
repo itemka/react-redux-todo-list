@@ -8,19 +8,17 @@ class AddNewItemForm extends React.Component {
         title: ''
     };
 
-    onAddItemClick = (e) => {
-        // let newText = this.state.title;
-        // this.setState({title: ""});
-        // if (newText === "") {this.setState({error: true});}
-        // else {
-        //     this.setState({error: false});
-        //     // передаём новый текст наружу
-        //     console.log(this.props);
-        //     this.props.addItem(newText);
-        // }
-            this.props.addItem(e.currentTarget.value);
-            console.log(e.currentTarget.value);
+    onAddItemClick = () => {
+        let newText = this.state.title;
+        this.setState({title: ""});
 
+        if (newText === "") {
+            this.setState({error: true});
+        } else {
+            this.setState({error: false});
+            // передаём новый текст наружу
+            this.props.addItem(newText);
+        }
     };
 
     onTitleChanged = (e) => {
@@ -32,9 +30,7 @@ class AddNewItemForm extends React.Component {
 
     onKeyPress = (e) => {
         if (e.key === "Enter") {
-            // this.onAddItemClick();
-            this.props.addItem(e.currentTarget.value);
-            console.log(e.currentTarget.value)
+            this.onAddItemClick();
         }
     };
 
