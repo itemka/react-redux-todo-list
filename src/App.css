@@ -19,6 +19,7 @@
 .taskText{
   font-size: 1.3em;
   width: 200px;
+/*  text-transform: capitalize;*/
 }
 .buttonIntoTodoListFooter{
 

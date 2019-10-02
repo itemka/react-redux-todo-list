@@ -13,10 +13,10 @@ class TodoList extends React.Component {
         super(props);
         this.newTasksTitileRef = React.createRef();
     }
+
     componentDidMount() {
         this.restoreState();
     }
-
 
     // _restoreState = () => {
     //     // объявляем наш стейт стартовый
@@ -70,6 +70,11 @@ class TodoList extends React.Component {
         filterValue: "All"
     };
 
+    changeFilter = (newFilterValue) => {
+        this.setState({filterValue: newFilterValue}, () => {
+            this.saveState();
+        });
+    };
 
     restoreState = () => {
         axios.get(
@@ -106,14 +111,21 @@ class TodoList extends React.Component {
             })
     };
 
-    changeFilter = (newFilterValue) => {
-        this.setState({filterValue: newFilterValue}, () => {
-            this.saveState();
-        });
+    changeObjectAPI = (taskId, object) => {
+        let task = this.props.tasks.find(item=>item.id === taskId);
+        let newTask = {...task, ...object};
+        // this.props.changeObject(this.props.id, taskId, object);
+        axios.put(`https://social-network.samuraijs.com/api/1.0/todo-lists/tasks/`,
+            newTask,
+            {withCredentials: true, headers: {"API-KEY": "326adc8b-48be-4905-a33d-14875af1c491"}})
+            .then(response => {
+                this.props.changeObject(this.props.id, taskId, object)
+            })
     };
 
-    changeTask = (taskId, obj) => this.props.changeObject(this.props.id, taskId, obj);
-    changeStatus = (taskId, isDone) => this.changeTask(taskId, {isDone: isDone});
+
+    changeTask = (taskId, obj) => this.changeObjectAPI(taskId, obj);
+    changeStatus = (taskId, isDone) => this.changeTask(taskId, {status: isDone});
     changeTitle = (taskId, title) => this.changeTask(taskId, {title: title});
 
     render = () => {
@@ -137,10 +149,10 @@ class TodoList extends React.Component {
                                        return true;
                                    }
                                    if (this.state.filterValue === "Active") {
-                                       return t.isDone === false;
+                                       return t.status === 0;
                                    }
                                    if (this.state.filterValue === "Completed") {
-                                       return t.isDone === true;
+                                       return t.status === 2;
                                    }
                                })}/>
                 <TodoListFooter changeFilter={this.changeFilter} filterValue={this.state.filterValue}/>

@@ -90,9 +90,12 @@ const ToDoListsReducer = (state = initialState, action) => {
                 ...state,
                 todolists: state.todolists.map(item => {
                     if (item.id === action.tasksId) return {
-                        ...item, tasks: item.tasks.map(task => {
-                            if (task.id === action.taskId) return {...task, ...action.changeObj};
-                            else return task;
+                        ...item,
+                        tasks: item.tasks.map(task => {
+                            if (task.id === action.taskId) {
+                                return {...task, ...action.changeObj};
+                                debugger
+                            } else return task;
                         })
                     };
                     else return item;

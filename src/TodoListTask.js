@@ -3,12 +3,12 @@ import './App.css';
 
 class TodoListTask extends React.Component {
 
-    onIsDoneChanged = (e) => {
-        this.props.changeStatus(this.props.task.id, e.currentTarget.checked);
+    onIsDoneChanged = event => {
+        this.props.changeStatus(this.props.task.id, event.currentTarget.checked ? 2 : 0);
     };
 
-    onTitleChanged = (e) => {
-        this.props.changeTitle(this.props.task.id, e.currentTarget.value);
+    onTitleChanged = event => {
+        this.props.changeTitle(this.props.task.id, event.currentTarget.value);
     };
 
     state = {
@@ -31,7 +31,7 @@ class TodoListTask extends React.Component {
         let containerCssClass = this.props.task.isDone ? "todoList-task done" : "todoList-task";
         return (
             <div className={`${containerCssClass} todoList-task`}>
-                <input type="checkbox" checked={this.props.task.isDone} onChange={this.onIsDoneChanged}/>{'   '}
+                <input type="checkbox" checked={this.props.task.status} onChange={this.onIsDoneChanged}/>{'   '}
                 <span className={`taskText`}>
                     {this.state.editMode
                         ? <input onBlur={this.deactivateEditMode} onChange={this.onTitleChanged} autoFocus={true}
