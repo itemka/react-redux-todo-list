@@ -67,7 +67,7 @@ class TodoList extends React.Component {
     nextTaskId = 0;
     state = {
         tasks: [],
-        filterValue: "All"
+        filterValue: "All",
     };
 
     changeFilter = (newFilterValue) => {
@@ -111,22 +111,21 @@ class TodoList extends React.Component {
             })
     };
 
-    changeObjectAPI = (taskId, object) => {
-        let task = this.props.tasks.find(item=>item.id === taskId);
+    changeObjectAPI = (taskId, object, changeObjectBool) => {
+        let task = this.props.tasks.find(item => item.id === taskId);
         let newTask = {...task, ...object};
-        // this.props.changeObject(this.props.id, taskId, object);
-        axios.put(`https://social-network.samuraijs.com/api/1.0/todo-lists/tasks/`,
-            newTask,
+        changeObjectBool
+            ? axios.put(`https://social-network.samuraijs.com/api/1.0/todo-lists/tasks/`, newTask,
             {withCredentials: true, headers: {"API-KEY": "326adc8b-48be-4905-a33d-14875af1c491"}})
-            .then(response => {
-                this.props.changeObject(this.props.id, taskId, object)
-            })
+                .then(response => {
+                    this.props.changeObject(this.props.id, taskId, object)
+                })
+            : this.props.changeObject(this.props.id, taskId, object)
     };
 
-
-    changeTask = (taskId, obj) => this.changeObjectAPI(taskId, obj);
-    changeStatus = (taskId, isDone) => this.changeTask(taskId, {status: isDone});
-    changeTitle = (taskId, title) => this.changeTask(taskId, {title: title});
+    changeTask = (taskId, obj, changeObjectBool) => this.changeObjectAPI(taskId, obj, changeObjectBool);
+    changeStatus = (taskId, isDone, changeObjectBool) => this.changeTask(taskId, {status: isDone}, changeObjectBool);
+    changeTitle = (taskId, title, changeObjectBool) => this.changeTask(taskId, {title: title}, changeObjectBool);
 
     render = () => {
 

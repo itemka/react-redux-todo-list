@@ -5,9 +5,12 @@ class TodoListTitle extends React.Component {
     render = () => {
         return (
             <div>
-                <h3 className={`todoList-header_title center`}>{this.props.title}
+                <div>
                     <button className={`button`} onClick={this.props.deleteListTask}>X</button>
-                </h3>
+                </div>
+                <div>
+                    <h3 className={`todoList-header_title center`}>{this.props.title}</h3>
+                </div>
             </div>
         );
     }

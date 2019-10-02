@@ -11,6 +11,12 @@
 .todoList-newTaskForm{
   margin: 10px;
 }
+.todoList-header_title{
+}
+.todoList-tasks{
+  margin-bottom: 30px;
+  margin-top: 5px;
+}
 .button{
   padding: 2px 10px;
   margin: 0 10px;

@@ -35,7 +35,7 @@ const initialState = {
         //     ]
         // }
     ],
-    buttonTitle: 'X'
+    buttonTitle: 'X',
 };
 
 const ToDoListsReducer = (state = initialState, action) => {
@@ -94,7 +94,7 @@ const ToDoListsReducer = (state = initialState, action) => {
                         tasks: item.tasks.map(task => {
                             if (task.id === action.taskId) {
                                 return {...task, ...action.changeObj};
-                                debugger
+                            debugger
                             } else return task;
                         })
                     };
