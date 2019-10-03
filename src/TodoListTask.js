@@ -5,17 +5,16 @@ class TodoListTask extends React.Component {
 
     state = {
         editMode: false,
+        taskTitle: this.props.task.title,
     };
 
     onIsDoneChanged = event => {
-        this.props.changeStatus(this.props.task.id, event.currentTarget.checked ? 2 : 0, true);
+        this.props.changeStatus(this.props.task.id, event.currentTarget.checked ? 2 : 0);
     };
 
-    onTitleChangedEventSendTitleRedux = event => {
-        this.props.changeTitle(this.props.task.id, event.currentTarget.value, false);
-    };
-    onTitleChangedAPI = title => {
-        this.props.changeTitle(this.props.task.id, title, true);
+    updateTitle = event => {
+        /*this.props.changeTitle(this.props.task.id, event.currentTarget.value);*/
+        this.setState({taskTitle: event.currentTarget.value});
     };
 
     activateEditMode = () => {
@@ -23,7 +22,7 @@ class TodoListTask extends React.Component {
     };
     deactivateEditMode = () => {
         this.setState({editMode: false});
-        this.onTitleChangedAPI(this.props.task.title);
+        this.props.changeTitle(this.props.task.id, this.state.taskTitle);
     };
     onDeleteTask = () => {
         this.props.deleteTask(this.props.tasksId, this.props.task.id)
@@ -37,10 +36,10 @@ class TodoListTask extends React.Component {
                 <span className={`taskText`}>
                     {this.state.editMode
                         ? <input onBlur={this.deactivateEditMode}
-                                 onChange={this.onTitleChangedEventSendTitleRedux}
+                                 onChange={this.updateTitle}
                                  autoFocus={true}
-                                 value={this.props.task.title}/>
-                        : <span onClick={this.activateEditMode}>{/*this.props.task.id*/}{this.props.task.title}</span>
+                                 value={this.state.taskTitle}/>
+                        : <span onClick={this.activateEditMode}>{this.props.task.title}</span>
                     }
                 </span>{'   '}
                 <span className={`priority`}> (priority: {this.props.task.priority})</span>
