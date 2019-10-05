@@ -27,5 +27,8 @@ export const api = {
     },
     changeObjectAPI(objects) {
         return instance.put(`tasks`, objects)
+    },
+    changeTodoListTitle(todolistId, title) {
+        return instance.put(`${todolistId}`, {title})
     }
 };

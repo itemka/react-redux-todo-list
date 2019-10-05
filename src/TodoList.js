@@ -5,7 +5,7 @@ import TodoListFooter from "./TodoListFooter";
 import TodoListTitle from "./TodoListTitle";
 import AddNewItemForm from "./AddNewItemForm";
 import {connect} from "react-redux";
-import {addTask, setTasks, deleteListTask, deleteTask, changeObj} from "./Redux/Reduser";
+import {addTask, setTasks, deleteListTask, deleteTask, changeObj, changeTodoListTitle} from "./Redux/Reduser";
 import {api} from "./API";
 
 class TodoList extends React.Component {
@@ -68,6 +68,8 @@ class TodoList extends React.Component {
     state = {
         tasks: [],
         filterValue: "All",
+        editMode: false,
+        todoListTitle: this.props.title
     };
 
     changeFilter = (newFilterValue) => {
@@ -108,9 +110,22 @@ class TodoList extends React.Component {
         })
     };
 
+    changeTodoLIstTitle = (title) => {
+        api.changeTodoListTitle(this.props.id, title).then(response => {
+            this.props.changeTodoListTitle(this.props.id, title);
+        })
+    };
+
     changeTask = (taskId, obj) => this.changeObjectAPI(taskId, obj);
     changeStatus = (taskId, isDone) => this.changeTask(taskId, {status: isDone});
     changeTitle = (taskId, title) => this.changeTask(taskId, {title: title});
+
+    deactivateEditMode = () => {
+        this.setState({editMode: false})
+    };
+    activateEditMode = () => {
+        this.setState({editMode: true})
+    };
 
     render = () => {
 
@@ -119,7 +134,9 @@ class TodoList extends React.Component {
         return (
             <div className="todoList">
                 <div className="todoList-header">
-                    <TodoListTitle title={this.props.title} todoListId={this.props.id}
+                    <TodoListTitle title={this.props.title}
+                                   todolistId={this.props.id}
+                                   changeTodoLIstTitle={this.changeTodoLIstTitle}
                                    deleteListTask={() => this.deleteListTask(this.props.id)}/>
                     <AddNewItemForm addItem={this.addNewTask}/>
                 </div>
@@ -153,6 +170,7 @@ const mapDispatchToProps = dispatch => {
         deleteListTask: todolistId => dispatch(deleteListTask(todolistId)),
         deleteTask: (todolistId, taskId) => dispatch(deleteTask(todolistId, taskId)),
         changeObject: (tasksId, taskId, changeObject) => dispatch(changeObj(tasksId, taskId, changeObject)),
+        changeTodoListTitle: (todolistId, title) => dispatch(changeTodoListTitle(todolistId, title))
     }
 };
 
