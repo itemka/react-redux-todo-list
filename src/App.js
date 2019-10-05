@@ -5,13 +5,12 @@ import AddNewItemForm from "./AddNewItemForm";
 import {connect} from "react-redux";
 import {addTodoList, setTodoLists} from "./Redux/Reduser";
 import axios from "axios";
+import {api} from "./API";
 
 class App extends React.Component {
     componentDidMount() {
         this.restoreState();
     }
-
-
 
     nextTodoListId = 0;
     state = {
@@ -20,12 +19,13 @@ class App extends React.Component {
 
 
     addTodoList = (title) => {
-        axios.post(
-            `https://social-network.samuraijs.com/api/1.0/todo-lists`,
-            {title: title},
-            {withCredentials: true, headers: {"API-KEY": "326adc8b-48be-4905-a33d-14875af1c491"}})
-            .then(response => {
-                this.props.addTodoList(response.data.data.item);
+        api.createTodoList(title).then(response => {
+            this.props.addTodoList(response.data.data.item);
+        })
+    };
+    restoreState = () => {
+        api.getTodoList().then(response => {
+                this.props.setTodoLists(response.data);
             })
     };
 
@@ -47,15 +47,6 @@ class App extends React.Component {
         localStorage.setItem("todolists-state", stateAsString);
     };
 
-
-    restoreState = () => {
-        axios.get(
-            `https://social-network.samuraijs.com/api/1.0/todo-lists`,
-            {withCredentials: true})
-            .then(response => {
-                this.props.setTodoLists(response.data);
-            })
-    };
     _restoreState = () => {
         // объявляем наш стейт стартовый
         let state = this.state;
