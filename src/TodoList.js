@@ -5,7 +5,19 @@ import TodoListFooter from "./TodoListFooter";
 import TodoListTitle from "./TodoListTitle";
 import AddNewItemForm from "./AddNewItemForm";
 import {connect} from "react-redux";
-import {addTask, setTasks, deleteListTask, deleteTask, changeObj, changeTodoListTitle} from "./Redux/Reduser";
+import {
+    addTask,
+    setTasks,
+    deleteListTask,
+    deleteTask,
+    changeObj,
+    changeTodoListTitleAC,
+    addTaskThunkCreator,
+    setTasksThunkCreator,
+    deleteListTaskThunkCreator,
+    deleteTaskThunkCreator,
+    changeObjectThunkCreator, changeTodoListTitleACThunkCreator
+} from "./Redux/Reduser";
 import {api} from "./API";
 
 class TodoList extends React.Component {
@@ -79,53 +91,51 @@ class TodoList extends React.Component {
     };
 
     restoreState = () => {
-        api.getTasks(this.props.id).then(response => {
-            this.props.setTasks(response.data.items, this.props.id);
-        })
+        this.props.setTasksThunkCreator(this.props.id);
+        // api.getTasks(this.props.id).then(response => {
+        //     this.props.setTasks(response.data.items, this.props.id);
+        // })
     };
-
     addNewTask = (newText) => {
-        api.createTasks(this.props.id, newText).then(response => {
-            this.props.addTask(response.data.data.item, this.props.id);
-        })
+        this.props.addTaskThunkCreator(newText, this.props.id);
+        // api.createTasks(this.props.id, newText).then(response => {
+        //     this.props.addTask(response.data.data.item, this.props.id);
+        // })
     };
-
     deleteListTask = (todoListId) => {
-        api.deleteTodoList(todoListId).then(response => {
-            this.props.deleteListTask(todoListId)
-        })
+        this.props.deleteListTaskThunkCreator(todoListId);
+        // api.deleteTodoList(todoListId).then(response => {
+        //     this.props.deleteListTask(todoListId)
+        // })
     };
-
     deleteTask = (todolistId, taskId) => {
-        api.deleteTask(todolistId, taskId).then(response => {
-            this.props.deleteTask(todolistId, taskId);
-        })
+        this.props.deleteTaskThunkCreator(todolistId, taskId)
+        // api.deleteTask(todolistId, taskId).then(response => {
+        //     this.props.deleteTask(todolistId, taskId);
+        // })
     };
-
-    changeObjectAPI = (taskId, object) => {
-        let task = this.props.tasks.find(item => item.id === taskId);
-        let newTask = {...task, ...object};
-        api.changeObjectAPI(newTask).then(response => {
-            this.props.changeObject(this.props.id, taskId, newTask)
-        })
-    };
-
     changeTodoLIstTitle = (title) => {
-        api.changeTodoListTitle(this.props.id, title).then(response => {
-            this.props.changeTodoListTitle(this.props.id, title);
-        })
+        this.props.changeTodoListTitleACThunkCreator(this.props.id, title)
+        // api.changeTodoListTitle(this.props.id, title).then(response => {
+        //     this.props.changeTodoListTitleAC(this.props.id, title);
+        // })
+    };
+
+    changeObjectAPI = (taskId, obj) => {
+        this.props.changeObjectThunkCreator(this.props.id, taskId, obj);
+        // let task = this.props.tasks.find(item => item.id === taskId);
+        // let newTask = {...task, ...object};
+        // api.changeObjectAPI(newTask).then(response => {
+        //     this.props.changeObject(this.props.id, taskId, newTask)
+        // })
     };
 
     changeTask = (taskId, obj) => this.changeObjectAPI(taskId, obj);
     changeStatus = (taskId, isDone) => this.changeTask(taskId, {status: isDone});
     changeTitle = (taskId, title) => this.changeTask(taskId, {title: title});
 
-    deactivateEditMode = () => {
-        this.setState({editMode: false})
-    };
-    activateEditMode = () => {
-        this.setState({editMode: true})
-    };
+    deactivateEditMode = () => this.setState({editMode: false});
+    activateEditMode = () => this.setState({editMode: true});
 
     render = () => {
 
@@ -165,15 +175,23 @@ class TodoList extends React.Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addTask: (newTask, todolistId) => dispatch(addTask(newTask, todolistId)),
-        setTasks: (tasks, todolistId) => dispatch(setTasks(tasks, todolistId)),
-        deleteListTask: todolistId => dispatch(deleteListTask(todolistId)),
-        deleteTask: (todolistId, taskId) => dispatch(deleteTask(todolistId, taskId)),
-        changeObject: (tasksId, taskId, changeObject) => dispatch(changeObj(tasksId, taskId, changeObject)),
-        changeTodoListTitle: (todolistId, title) => dispatch(changeTodoListTitle(todolistId, title))
+        addTaskThunkCreator: (newTask, todolistId) => dispatch(addTaskThunkCreator(newTask, todolistId)),
+        setTasksThunkCreator: (todolistId) => dispatch(setTasksThunkCreator(todolistId)),
+        deleteListTaskThunkCreator: (todoListId) => dispatch(deleteListTaskThunkCreator(todoListId)),
+        deleteTaskThunkCreator: (todolistId, taskId) => dispatch(deleteTaskThunkCreator(todolistId, taskId)),
+        changeTodoListTitleACThunkCreator: (todolistId, title) => dispatch(changeTodoListTitleACThunkCreator(todolistId, title)),
+
+        changeObjectThunkCreator: (todolistId, taskId, obj) => dispatch(changeObjectThunkCreator(todolistId, taskId, obj)),
     }
 };
 
-const ConnectTodoList = connect(null, mapDispatchToProps)(TodoList);
+const ConnectTodoList = connect(null, {
+    addTaskThunkCreator,
+    setTasksThunkCreator,
+    deleteListTaskThunkCreator,
+    deleteTaskThunkCreator,
+    changeTodoListTitleACThunkCreator,
+    changeObjectThunkCreator
+})(TodoList);
 export default ConnectTodoList;
 

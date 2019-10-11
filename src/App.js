@@ -3,9 +3,7 @@ import './App.css';
 import TodoList from "./TodoList";
 import AddNewItemForm from "./AddNewItemForm";
 import {connect} from "react-redux";
-import {addTodoList, setTodoLists} from "./Redux/Reduser";
-import axios from "axios";
-import {api} from "./API";
+import {addTodoListThunkCreator, setTodoListsThunkCreator} from "./Redux/Reduser";
 
 class App extends React.Component {
     componentDidMount() {
@@ -17,16 +15,13 @@ class App extends React.Component {
         todolists: []
     };
 
-
     addTodoList = (title) => {
-        api.createTodoList(title).then(response => {
-            this.props.addTodoList(response.data.data.item);
-        })
+        this.props.addTodoListThunkCreator(title)
+        // api.createTodoList(title).then(response => this.props.addTodoList(response.data.data.item))
     };
     restoreState = () => {
-        api.getTodoList().then(response => {
-                this.props.setTodoLists(response.data);
-            })
+        this.props.setTodoListsThunkCreator();
+        // api.getTodoList().then(response => { this.props.setTodoLists(response.data) })
     };
 
     _addTodoList = (title) => {
@@ -39,14 +34,12 @@ class App extends React.Component {
         // });
         // this.nextTodoListId++;
     };
-
     saveState = () => {
         // переводим объект в строку
         let stateAsString = JSON.stringify(this.state);
         // сохраняем нашу строку в localStorage под ключом "our-state"
         localStorage.setItem("todolists-state", stateAsString);
     };
-
     _restoreState = () => {
         // объявляем наш стейт стартовый
         let state = this.state;
@@ -68,7 +61,7 @@ class App extends React.Component {
     };
 
     render = () => {
-        let todolists = this.props.todolists.map(tl => <TodoList id={tl.id} title={tl.title} tasks={tl.tasks}/>);
+        let todolists = this.props.todolists.map(tl => <TodoList key={tl.id} id={tl.id} title={tl.title} tasks={tl.tasks}/>);
 
         return (
             <>
@@ -83,18 +76,7 @@ class App extends React.Component {
     }
 }
 
-
-const mapStateToProps = state => {
-    return {
-        todolists: state.todolists,
-    }
-};
-const mapDispatchToProps = (dispatch) => {
-    return {
-        addTodoList: (newTodoList) => dispatch(addTodoList(newTodoList)),
-        setTodoLists: (todoLists) => dispatch(setTodoLists(todoLists)),
-    }
-};
-const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
+const mapStateToProps = state => ({todolists: state.todolists});
+const ConnectedApp = connect(mapStateToProps, {addTodoListThunkCreator, setTodoListsThunkCreator})(App);
 export default ConnectedApp;
 
