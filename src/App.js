@@ -61,7 +61,11 @@ class App extends React.Component {
     };
 
     render = () => {
-        let todolists = this.props.todolists.map(tl => <TodoList key={tl.id} id={tl.id} title={tl.title} tasks={tl.tasks}/>);
+        // console.log(this.props.todolists);
+        console.log(this.props.state);
+        let todolists = this.props.todolists.map(tl => <TodoList key={tl.id} id={tl.id} title={tl.title}
+                                                                 tasks={tl.tasks}/>);
+
 
         return (
             <>
@@ -76,7 +80,7 @@ class App extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({todolists: state.todolists});
+const mapStateToProps = state => ({todolists: state.todolists, state: state});
 const ConnectedApp = connect(mapStateToProps, {addTodoListThunkCreator, setTodoListsThunkCreator})(App);
 export default ConnectedApp;
 

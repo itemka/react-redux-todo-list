@@ -14,7 +14,7 @@ export const setTasks = (tasks, todolistId) => ({type: SET_TASKS, todolistId: to
 export const addTodoList = newTodoList => ({type: ADD_TODOLIST, newTodoList: newTodoList});
 export const addTask = (newTask, todolistId) => ({type: ADD_TASK, newTask, todolistId});
 export const deleteListTask = (tasksId) => ({type: DELETE_LIST_TASK, tasksId: tasksId});
-export const deleteTask = (todolistId, taskId) => ({type: DELETE_TASK, tasksId: todolistId, taskId: taskId});
+export const deleteTask = (todolistId, taskId) => ({type: DELETE_TASK, todolistId, taskId});
 export const changeObj = (tasksId, taskId, changeObj) => ({type: CHANGE_OBJ, tasksId, taskId, changeObj});
 export const changeTodoListTitleAC = (todolistId, title) => ({type: CHANGE_TODOLIST_TITLE, todolistId, title});
 
@@ -40,10 +40,9 @@ export const deleteListTaskThunkCreator = (todoListId) => dispatch => {
         dispatch(deleteListTask(todoListId))
     })
 };
-export const deleteTaskThunkCreator = (todolistId, taskId) => dispatch => {
-    api.deleteTask(todolistId, taskId).then(response => {
-        dispatch(deleteTask(todolistId, taskId));
-    })
+export const deleteTaskThunkCreator = (todolistId, taskId) => async dispatch => {
+    await api.deleteTask(todolistId, taskId);
+    dispatch(deleteTask(todolistId, taskId));
 };
 export const changeTodoListTitleACThunkCreator = (todolistId, title) => dispatch => {
     api.changeTodoListTitle(todolistId, title).then(response => {
@@ -72,17 +71,6 @@ const initialState = {
         //         {id: 2, title: "fg", isDone: false, priority: "low"},
         //     ]
         // },
-        // {
-        //     id: 1, title: "sd", tasks: [
-        //         {id: 0, title: "afdg", isDone: false, priority: "low"},
-        //         {id: 1, title: "dfgdgd", isDone: false, priority: "low"},
-        //     ]
-        // },
-        // {
-        //     id: 2, title: "fg", tasks: [
-        //         {id: 0, title: "afdg", isDone: false, priority: "low"},
-        //     ]
-        // }
     ],
     buttonTitle: 'X',
 };
@@ -127,10 +115,9 @@ const ToDoListsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 todolists: state.todolists.map(item => {
-                    if (item.id === action.todolistId) return {
-                        ...item,
-                        tasks: item.tasks.filter(task => task.id !== action.taskId)
-                    };
+                    if (item.id === action.todolistId) {
+                        return {...item, tasks: [...item.tasks.filter(task => task.id !== action.taskId)]};
+                    } else return item;
                 })
             }
         }
@@ -161,6 +148,5 @@ const ToDoListsReducer = (state = initialState, action) => {
         default:
             return state;
     }
-    return state;
 };
 export default ToDoListsReducer;
