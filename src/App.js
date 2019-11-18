@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
-import TodoList from "./TodoList";
-import AddNewItemForm from "./AddNewItemForm";
+import TodoList from "./components/TodoList/TodoList.js";
+import AddNewItemForm from "./components/AddNewItemForm/AddNewItemForm";
 import {connect} from "react-redux";
-import {addTodoListThunkCreator, setTodoListsThunkCreator} from "./Redux/Reduser";
+import {addTodoListThunkCreator, setTodoListsThunkCreator} from "./Redux/Reducer";
 
 class App extends React.Component {
     componentDidMount() {
@@ -15,14 +15,8 @@ class App extends React.Component {
         todolists: []
     };
 
-    addTodoList = (title) => {
-        this.props.addTodoListThunkCreator(title)
-        // api.createTodoList(title).then(response => this.props.addTodoList(response.data.data.item))
-    };
-    restoreState = () => {
-        this.props.setTodoListsThunkCreator();
-        // api.getTodoList().then(response => { this.props.setTodoLists(response.data) })
-    };
+    addTodoList = (title) => this.props.addTodoListThunkCreator(title);
+    restoreState = () => this.props.setTodoListsThunkCreator();
 
     _addTodoList = (title) => {
         let newTodoList = {
@@ -61,12 +55,8 @@ class App extends React.Component {
     };
 
     render = () => {
-        // console.log(this.props.todolists);
-        console.log(this.props.state);
         let todolists = this.props.todolists.map(tl => <TodoList key={tl.id} id={tl.id} title={tl.title}
                                                                  tasks={tl.tasks}/>);
-
-
         return (
             <>
                 <div className={`center`}>

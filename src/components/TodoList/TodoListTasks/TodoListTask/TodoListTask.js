@@ -1,5 +1,8 @@
 import React from 'react';
-import './App.css';
+import '../../../../App.css';
+import css from './TodoListTask.module.css';
+import button from './../../../Button/Button.module.css';
+import Draggable from "./../../../../Dnd/Draggable/Draggable";
 
 class TodoListTask extends React.Component {
 
@@ -23,11 +26,12 @@ class TodoListTask extends React.Component {
     onDeleteTask = () => this.props.deleteTask(this.props.tasksId, this.props.task.id);
 
     render = () => {
-        let containerCssClass = this.props.task.status === 2 ? "todoList-task done" : "todoList-task";
+        let containerCssClass = this.props.task.status === 2 ? `${css.todoListTask} ${css.done}` : `${css.todoListTask}`;
         return (
-            <div className={`${containerCssClass} todoList-task`}>
-                <input type="checkbox" checked={this.props.task.status} onChange={this.onIsDoneChanged}/>{'   '}
-                <span className={`taskText`}>
+            <Draggable id={this.props.task.id}>
+                <div className={`${containerCssClass} ${css.todoListTask}`}>
+                    <input type="checkbox" checked={this.props.task.status} onChange={this.onIsDoneChanged}/>{'   '}
+                    <span className={css.taskText}>
                     {this.state.editMode
                         ? <input onBlur={this.deactivateEditMode}
                                  onChange={this.updateTitle}
@@ -36,9 +40,10 @@ class TodoListTask extends React.Component {
                         : <span onClick={this.activateEditMode}>{this.props.task.title}</span>
                     }
                 </span>{'   '}
-                <span className={`priority`}> (priority: {this.props.task.priority})</span>
-                <button className={`button`} onClick={this.onDeleteTask}>X</button>
-            </div>
+                    <span className={css.priority}> (priority: {this.props.task.priority})</span>
+                    <button className={button.button} onClick={this.onDeleteTask}>X</button>
+                </div>
+            </Draggable>
         );
     }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
-import './App.css';
-import Button from "./Button";
+import '../../App.css';
+import css from './AddNewItemForm.module.css';
+import Button from "./../../components/Button/Button";
 
 class AddNewItemForm extends React.Component {
     state = {
@@ -10,7 +11,7 @@ class AddNewItemForm extends React.Component {
 
     onAddItemClick = () => {
         let newText = this.state.title;
-        this.setState({title: ""});
+        this.setState({title: ''});
 
         if (newText === "") {
             this.setState({error: true});
@@ -35,10 +36,10 @@ class AddNewItemForm extends React.Component {
     };
 
     render = () => {
-        let classNameForInput = this.state.error ? "error" : "";
+        let classNameForInput = this.state.error ? `${css.classNameForInput} ${css.error}` : `${css.classNameForInput}`;
         return (
-            <div className={`todoList-newTaskForm center`}>
-                <input className={`classNameForInput`} type="text" placeholder="New item name"
+            <div className={css.newTaskForm}>
+                <input className={classNameForInput} type="text" placeholder="New item name"
                        onChange={this.onTitleChanged}
                        onKeyPress={this.onKeyPress}
                        value={this.state.title}

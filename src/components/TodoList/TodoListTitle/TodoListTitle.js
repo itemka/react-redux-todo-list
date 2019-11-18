@@ -1,5 +1,7 @@
 import React from 'react';
-import './App.css';
+import '../../../App.css';
+import css from './TodoListTitle.module.css';
+import button from './../../Button/Button.module.css';
 
 class TodoListTitle extends React.Component {
     state = {
@@ -20,10 +22,10 @@ class TodoListTitle extends React.Component {
         return (
             <div>
                 <div>
-                    <button className={`button`} onClick={this.props.deleteListTask}>X</button>
+                    <button className={button.button} onClick={this.props.deleteListTask}>X</button>
                 </div>
                 <div>
-                    <h3 className={`todoList-header_title center`}>
+                    <h3 className={`${css.title} center`}>
                         {this.state.editMode
                             ? <input onBlur={this.deactivateEditMode}
                                      onChange={this.changeTitle}

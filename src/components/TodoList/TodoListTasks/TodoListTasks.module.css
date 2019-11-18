@@ -1,0 +1,9 @@
+.TodoListTasks {
+    margin-bottom: 10px;
+    margin-top: 5px;
+    overflow-y: scroll;
+    height: 350px;
+    border: 1px solid #6e938f;
+    border-radius: 5px;
+    padding: 8px;
+}

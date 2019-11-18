@@ -1,14 +1,15 @@
 import React from 'react';
-import './App.css';
-import TodoListTasks from "./TodoListTasks";
-import TodoListFooter from "./TodoListFooter";
-import TodoListTitle from "./TodoListTitle";
-import AddNewItemForm from "./AddNewItemForm";
+import '../../App.css';
+import css from './TodoList.module.css';
+import TodoListTasks from "./TodoListTasks/TodoListTasks";
+import TodoListFooter from "./TodoListFooter/TodoListFooter";
+import TodoListTitle from "./TodoListTitle/TodoListTitle";
+import AddNewItemForm from "./../AddNewItemForm/AddNewItemForm";
 import {connect} from "react-redux";
 import {
     addTaskThunkCreator, setTasksThunkCreator, deleteListTaskThunkCreator, deleteTaskThunkCreator,
     changeObjectThunkCreator, changeTodoListTitleACThunkCreator
-} from "./Redux/Reduser";
+} from "../../Redux/Reducer";
 
 class TodoList extends React.Component {
     componentDidMount() {
@@ -95,8 +96,8 @@ class TodoList extends React.Component {
         const {tasks = []} = this.props;
 
         return (
-            <div className="todoList">
-                <div className="todoList-header">
+            <div className={css.todoList}>
+                <div>
                     <TodoListTitle title={this.props.title}
                                    todolistId={this.props.id}
                                    changeTodoLIstTitle={this.changeTodoLIstTitle}

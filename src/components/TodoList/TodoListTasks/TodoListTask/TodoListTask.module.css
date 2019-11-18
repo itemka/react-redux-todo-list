@@ -1,0 +1,21 @@
+.priority {
+    font-size: 0.7em;
+}
+
+.taskText {
+    font-size: 1.3em;
+    width: 200px;
+    /*  text-transform: capitalize;*/
+}
+
+.todoListTask {
+    vertical-align: middle;
+    background-color: cadetblue;
+    border-radius: 3px;
+    padding: 8px;
+    margin-bottom: 8px;
+}
+
+.todoListTask.done {
+    opacity: 0.4;
+}
