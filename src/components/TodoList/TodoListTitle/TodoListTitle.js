@@ -30,4 +30,3 @@ const TodoListTitle = (props) => {
 };
 
 export default TodoListTitle;
-

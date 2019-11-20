@@ -3,11 +3,15 @@ import {stopSubmit} from "redux-form";
 
 const SET_USER_DATA = 'SN/HEADER/SET_USER_DATA';
 const SET_USER_PHOTO = 'SN/HEADER/SET_USER_PHOTO';
+const IS_AUTH = 'IS_AUTH';
 
+export const isAuthAction = isAuth => ({type: IS_AUTH, isAuth});
 export const setUserData = (email, userId, login, isAuth) => ({
     type: SET_USER_DATA,
     data: {email, userId, login, isAuth}
 });
+export const saveState = isAuth => localStorage.setItem("isAuth", JSON.stringify(isAuth));
+
 
 export const checkUserDataThunkCreator = () => async dispatch => {
     let responseData = await authAPI.setUserDataAPI();
@@ -22,8 +26,8 @@ export const checkUserDataThunkCreator = () => async dispatch => {
 export const logInThunkCreator = (email, password, rememberMe, isAuth) => async dispatch => {
     if (email === `test@gmail.com`) email = `itemka2503@gmail.com`;
     if (password === `test`) password = `Developer2503`;
-
     let responseData = await authAPI.login(email, password, rememberMe);
+    saveState(true);
     if (responseData.resultCode === 0) dispatch(checkUserDataThunkCreator(isAuth));
     else dispatch(stopSubmit("login", {_error: responseData.messages,}));
 };
@@ -31,6 +35,15 @@ export const logOutThunkCreator = () => async dispatch => {
     let responseData = await authAPI.logout();
     if (responseData.resultCode === 0) {
         dispatch(setUserData(null, null, null, false));
+    }
+    saveState(false);
+};
+
+export const authorizationCheckThunk = () => dispatch => {
+    let stateAsString = localStorage.getItem("isAuth");
+    if (stateAsString !== null) { // если не было ни одного сохранения, то будет null.
+        dispatch(isAuthAction(JSON.parse(stateAsString)));
+        dispatch(checkUserDataThunkCreator());
     }
 };
 
@@ -53,6 +66,11 @@ const AuthReducer = (state = initialState, action) => {
             return {
                 ...state,
                 userPhoto: action.userPhoto,
+            };
+        case IS_AUTH:
+            return {
+                ...state,
+                isAuth: action.isAuth
             };
         default: {
             return state;

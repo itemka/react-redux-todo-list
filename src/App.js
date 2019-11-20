@@ -5,8 +5,13 @@ import {Redirect, Route} from "react-router-dom";
 import LoginContainer from "./components/Login/LoginContainer";
 import {getAuthUserIsAuthS} from "./BLL/AuthSelectors";
 import TodoListPage from "./components/TodoList/TodoListPage";
+import {authorizationCheckThunk} from "./BLL/AuthReducer";
 
 class App extends React.Component {
+    componentDidMount() {
+        this.props.authorizationCheckThunk();
+    }
+
     render = () => {
         return (
             <>
@@ -21,4 +26,4 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => ({isAuth: getAuthUserIsAuthS(state)});
-export default connect(mapStateToProps, {})(App);
+export default connect(mapStateToProps, {authorizationCheckThunk})(App);

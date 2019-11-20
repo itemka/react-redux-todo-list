@@ -1,51 +1,40 @@
-import React from 'react';
+import React, {useState} from 'react';
 import '../../../../App.css';
 import css from './TodoListTask.module.css';
 import button from './../../../Button/Button.module.css';
 import Draggable from "../../../DragAndDrop/Draggable/Draggable";
 
-class TodoListTask extends React.Component {
-
-    state = {
-        editMode: false,
-        taskTitle: this.props.task.title,
+const TodoListTask = (props) => {
+    let [editMode, setEditMode] = useState(false);
+    let [taskTitle, setTaskTitle] = useState(props.task.title);
+    let onIsDoneChanged = event => props.changeStatus(props.task.id, event.currentTarget.checked ? 2 : 0);
+    let updateTitle = event => setTaskTitle(event.currentTarget.value);
+    let activateEditMode = () => setEditMode(true);
+    let deactivateEditMode = () => {
+        setEditMode(false);
+        props.changeTitle(props.task.id, taskTitle);
     };
+    let onDeleteTask = () => props.deleteTask(props.tasksId, props.task.id);
 
-    onIsDoneChanged = event => this.props.changeStatus(this.props.task.id, event.currentTarget.checked ? 2 : 0);
-
-    updateTitle = event => {
-        /*this.props.changeTitle(this.props.task.id, event.currentTarget.value);*/
-        this.setState({taskTitle: event.currentTarget.value});
-    };
-
-    activateEditMode = () => this.setState({editMode: true});
-    deactivateEditMode = () => {
-        this.setState({editMode: false});
-        this.props.changeTitle(this.props.task.id, this.state.taskTitle);
-    };
-    onDeleteTask = () => this.props.deleteTask(this.props.tasksId, this.props.task.id);
-
-    render = () => {
-        let containerCssClass = this.props.task.status === 2 ? `${css.todoListTask} ${css.done}` : `${css.todoListTask}`;
-        return (
-            <Draggable id={this.props.task.id}>
-                <div className={`${containerCssClass} ${css.todoListTask}`}>
-                    <input type="checkbox" checked={this.props.task.status} onChange={this.onIsDoneChanged}/>{'   '}
-                    <span className={css.taskText}>
-                    {this.state.editMode
-                        ? <input onBlur={this.deactivateEditMode}
-                                 onChange={this.updateTitle}
+    let containerCssClass = props.task.status === 2 ? `${css.todoListTask} ${css.done}` : `${css.todoListTask}`;
+    return (
+        <Draggable id={props.task.id}>
+            <div className={`${containerCssClass} ${css.todoListTask}`}>
+                <input type="checkbox" checked={props.task.status} onChange={onIsDoneChanged}/>{'   '}
+                <span className={css.taskText}>
+                    {editMode
+                        ? <input onBlur={deactivateEditMode}
+                                 onChange={updateTitle}
                                  autoFocus={true}
-                                 value={this.state.taskTitle}/>
-                        : <span onClick={this.activateEditMode}>{this.props.task.title}</span>
+                                 value={taskTitle}/>
+                        : <span onClick={activateEditMode}>{props.task.title}</span>
                     }
                 </span>{'   '}
-                    <span className={css.priority}> (priority: {this.props.task.priority})</span>
-                    <button className={button.button} onClick={this.onDeleteTask}>X</button>
-                </div>
-            </Draggable>
-        );
-    }
-}
+                <span className={css.priority}> (priority: {props.task.priority})</span>
+                <button className={button.button} onClick={onDeleteTask}>X</button>
+            </div>
+        </Draggable>
+    );
+};
 
 export default TodoListTask;

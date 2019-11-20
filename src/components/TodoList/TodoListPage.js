@@ -5,11 +5,9 @@ import AddNewItemForm from "./../../components/AddNewItemForm/AddNewItemForm";
 import {connect} from "react-redux";
 import {addTodoListThunkCreator, setTodoListsThunkCreator} from "./../../BLL/Reducer";
 import LogOut from "./../../components/LogOut/LogOut";
-import {checkUserDataThunkCreator} from "./../../BLL/AuthReducer";
 
 class TodoListPage extends React.Component {
     componentDidMount() {
-        this.props.checkUserDataThunkCreator();
         this.props.setTodoListsThunkCreator();
     }
 
@@ -32,7 +30,7 @@ class TodoListPage extends React.Component {
 
 const mapStateToProps = state => ({todolists: state.partState.todolists});
 export default connect(mapStateToProps, {
-    addTodoListThunkCreator, setTodoListsThunkCreator, checkUserDataThunkCreator
+    addTodoListThunkCreator, setTodoListsThunkCreator,
 })(TodoListPage);
 
 // nextTodoListId = 0;

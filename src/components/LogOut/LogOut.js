@@ -12,7 +12,7 @@ const LogOut = (props) => {
                 ? <span>
                     {props.login}
                     <span>
-                        <NavLink to={``} onClick={props.logOutThunkCreator}>Log out</NavLink>
+                        <NavLink to={``} className={css.NavLink} onClick={props.logOutThunkCreator}>Log out</NavLink>
                     </span>
                    </span>
                 : <div/>}
