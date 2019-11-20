@@ -1,0 +1,16 @@
+.textLogin{
+    float: right;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    justify-items: center;
+}
+.textLogin span span{
+    background-color: orangered;
+    padding: 5px 10px;
+    border-radius: 3px;
+    margin: 10px 15px;
+}
+.textLogin span span:hover{
+    background-color: red;
+}

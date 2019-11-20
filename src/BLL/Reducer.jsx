@@ -1,4 +1,4 @@
-import {api} from "../API";
+import {API} from "../DAL/API";
 
 export const SET_TODOLISTS = 'SET_TODOLISTS';
 export const SET_TASKS = 'SET_TASKS';
@@ -8,7 +8,6 @@ export const DELETE_LIST_TASK = 'TodoList/Reduser/DELETE_LIST_TASK';
 export const DELETE_TASK = 'TodoList/Reduser/DELETE_TASK';
 export const CHANGE_OBJ = 'TodoList/Reduser/CHANGE_OBJ';
 export const CHANGE_TODOLIST_TITLE = 'TodoList/Reduser/CHANGE_TODOLIST_TITLE';
-export const FILTER_TASKS = 'TodoList/Reduser/FILTER_TASKS';
 
 
 export const setTodoLists = todoLists => ({type: SET_TODOLISTS, todoLists: todoLists});
@@ -19,43 +18,40 @@ export const deleteListTask = (tasksId) => ({type: DELETE_LIST_TASK, tasksId: ta
 export const deleteTask = (todolistId, taskId) => ({type: DELETE_TASK, todolistId, taskId});
 export const changeObj = (tasksId, taskId, changeObj) => ({type: CHANGE_OBJ, tasksId, taskId, changeObj});
 export const changeTodoListTitleAC = (todolistId, title) => ({type: CHANGE_TODOLIST_TITLE, todolistId, title});
-export const filterTasks = (todolistId, tasksId) => ({type: FILTER_TASKS, todolistId, tasksId});
 
 
-export const addTodoListThunkCreator = (title) => dispatch => {
-    api.createTodoList(title).then(response => dispatch(addTodoList(response.data.data.item)))
+export const addTodoListThunkCreator = (title) => async dispatch => {
+    let response = await API.createTodoList(title);
+    dispatch(addTodoList(response.data.data.item));
 };
-export const setTodoListsThunkCreator = () => dispatch => {
-    api.getTodoList().then(response => dispatch(setTodoLists(response.data)))
+export const setTodoListsThunkCreator = () => async dispatch => {
+    let response = await API.getTodoList();
+    dispatch(setTodoLists(response.data));
 };
-export const addTaskThunkCreator = (newTitle, todolistId) => dispatch => {
-    api.createTasks(todolistId, newTitle).then(response => {
-        dispatch(addTask(response.data.data.item, todolistId));
-    })
+export const addTaskThunkCreator = (newTitle, todolistId) => async dispatch => {
+    let response = await API.createTasks(todolistId, newTitle);
+    dispatch(addTask(response.data.data.item, todolistId));
 };
-export const setTasksThunkCreator = (todolistId) => dispatch => {
-    api.getTasks(todolistId).then(response => {
-        dispatch(setTasks(response.data.items, todolistId));
-    })
+export const setTasksThunkCreator = (todolistId) => async dispatch => {
+    let response = await API.getTasks(todolistId);
+    dispatch(setTasks(response.data.items, todolistId));
 };
-export const deleteListTaskThunkCreator = (todoListId) => dispatch => {
-    api.deleteTodoList(todoListId).then(response => {
-        dispatch(deleteListTask(todoListId))
-    })
+export const deleteListTaskThunkCreator = (todoListId) => async dispatch => {
+    await API.deleteTodoList(todoListId);
+    dispatch(deleteListTask(todoListId));
 };
 export const deleteTaskThunkCreator = (todolistId, taskId) => async dispatch => {
-    await api.deleteTask(todolistId, taskId);
+    await API.deleteTask(todolistId, taskId);
     dispatch(deleteTask(todolistId, taskId));
 };
-export const changeTodoListTitleACThunkCreator = (todolistId, title) => dispatch => {
-    api.changeTodoListTitle(todolistId, title).then(response => {
-        dispatch(changeTodoListTitleAC(todolistId, title));
-    })
+export const changeTodoListTitleACThunkCreator = (todolistId, title) => async dispatch => {
+    await API.changeTodoListTitle(todolistId, title);
+    dispatch(changeTodoListTitleAC(todolistId, title));
 };
 export const changeObjectThunkCreator = (todolistId, taskId, obj) => (dispatch, getState) => {
-    getState().todolists.find(item => item.id === todolistId).tasks.forEach(el => {
+    getState().partState.todolists.find(item => item.id === todolistId).tasks.forEach(el => {
         if (el.id === taskId) {
-            api.changeObjectAPI({...el, ...obj}).then(response => {
+            API.changeObjectAPI({...el, ...obj}).then(response => {
                 dispatch(changeObj(todolistId, taskId, obj))
             })
         }
@@ -66,8 +62,7 @@ export const dragAndDropThunkCreator = (dropTodolistId, dndId) => async (dispatc
     let beforDndTodolistId = '';
     let beforDndTaskId = '';
     let beforDndTitle = '';
-    console.log(getState());
-    await getState().todolists.map(item => {
+    await getState().partState.todolists.map(item => {
         item.tasks.map(el => {
             if (el.id === dndId) {
                 beforDndTodolistId = item.id;

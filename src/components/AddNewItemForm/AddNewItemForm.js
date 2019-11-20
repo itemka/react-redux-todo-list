@@ -1,7 +1,6 @@
 import React from 'react';
-import '../../App.css';
 import css from './AddNewItemForm.module.css';
-import Button from "./../../components/Button/Button";
+import Button from "../Button/Button";
 
 class AddNewItemForm extends React.Component {
     state = {

@@ -2,7 +2,7 @@ import React from 'react';
 import '../../../../App.css';
 import css from './TodoListTask.module.css';
 import button from './../../../Button/Button.module.css';
-import Draggable from "./../../../../Dnd/Draggable/Draggable";
+import Draggable from "../../../DragAndDrop/Draggable/Draggable";
 
 class TodoListTask extends React.Component {
 

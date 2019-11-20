@@ -1,7 +1,7 @@
 import React from 'react';
 import css from './TodoListTasks.module.css';
-import TodoListTask from "./../TodoListTasks/TodoListTask/TodoListTask";
-import Droppable from "./../../../Dnd/Droppable/Droppable";
+import TodoListTask from "./TodoListTask/TodoListTask";
+import Droppable from "../../DragAndDrop/Droppable/Droppable";
 
 class TodoListTasks extends React.Component {
     render = () => {

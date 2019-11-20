@@ -20,7 +20,7 @@ class TodoListFooter extends React.Component {
         let classForActive = this.props.filterValue === "Active" ? `${button.button} ${css.filterActive}` : `${button.button}`;
         return (
             <div>
-                {!this.state.isHidden && <div className={`center`}>
+                {!this.state.isHidden && <div className={css.center}>
                     <button onClick={this.onAllFilterClick} className={classForAll}>All</button>
                     <button onClick={this.onCompletedFilterClick} className={classForCompleted}>Completed</button>
                     <button onClick={this.onActiveFilterClick} className={classForActive}>Active</button>

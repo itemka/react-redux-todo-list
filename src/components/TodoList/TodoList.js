@@ -9,7 +9,7 @@ import {connect} from "react-redux";
 import {
     addTaskThunkCreator, setTasksThunkCreator, deleteListTaskThunkCreator, deleteTaskThunkCreator,
     changeObjectThunkCreator, changeTodoListTitleACThunkCreator
-} from "../../Redux/Reducer";
+} from "../../BLL/Reducer";
 
 class TodoList extends React.Component {
     componentDidMount() {

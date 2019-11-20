@@ -1,5 +1,5 @@
 import React from 'react';
-import {dragAndDropThunkCreator} from "../../Redux/Reducer";
+import {dragAndDropThunkCreator} from "../../../BLL/Reducer";
 import {connect} from "react-redux";
 
 class Droppable extends React.Component {
