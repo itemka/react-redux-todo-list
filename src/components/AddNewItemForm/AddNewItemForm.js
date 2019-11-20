@@ -29,9 +29,7 @@ class AddNewItemForm extends React.Component {
     };
 
     onKeyPress = (e) => {
-        if (e.key === "Enter") {
-            this.onAddItemClick();
-        }
+        if (e.key === "Enter") this.onAddItemClick();
     };
 
     render = () => {
@@ -45,10 +43,8 @@ class AddNewItemForm extends React.Component {
                 />
                 <Button buttonCallBack={this.onAddItemClick.bind(this)} title={`Add`}/>
             </div>
-
         );
     }
 }
 
 export default AddNewItemForm;
-

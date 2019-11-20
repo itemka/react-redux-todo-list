@@ -3,7 +3,6 @@ import {dragAndDropThunkCreator} from "../../../BLL/Reducer";
 import {connect} from "react-redux";
 
 class Droppable extends React.Component {
-
     drop = (e) => {
         e.preventDefault();
         const dataOfTaskId = e.dataTransfer.getData(`transfer`);
@@ -11,9 +10,7 @@ class Droppable extends React.Component {
         this.props.dragAndDropThunkCreator(this.props.id, dataOfTaskId);
     };
 
-    allowDrop = (e) => {
-        e.preventDefault();
-    };
+    allowDrop = (e) => e.preventDefault();
 
     render() {
         return (

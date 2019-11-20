@@ -13,7 +13,7 @@ import {
 
 class TodoList extends React.Component {
     componentDidMount() {
-        this.restoreState();
+        this.props.setTasksThunkCreator(this.props.id);
     }
 
     // _restoreState = () => {
@@ -35,7 +35,6 @@ class TodoList extends React.Component {
     //         })
     //     });
     // };
-
     // _addTask = (newText) => {
     //     let newTask = {
     //         id: this.nextTaskId,
@@ -75,8 +74,6 @@ class TodoList extends React.Component {
             this.saveState();
         });
     };
-
-    restoreState = () => this.props.setTasksThunkCreator(this.props.id);
 
     addNewTask = (newText) => this.props.addTaskThunkCreator(newText, this.props.id);
     deleteListTask = (todoListId) => this.props.deleteListTaskThunkCreator(todoListId);

@@ -71,8 +71,8 @@ export const dragAndDropThunkCreator = (dropTodolistId, dndId) => async (dispatc
             }
         });
     });
-    await dispatch(addTaskThunkCreator(beforDndTitle, dropTodolistId));
-    await dispatch(deleteTaskThunkCreator(beforDndTodolistId, beforDndTaskId));
+    dispatch(addTaskThunkCreator(beforDndTitle, dropTodolistId));
+    dispatch(deleteTaskThunkCreator(beforDndTodolistId, beforDndTaskId));
 };
 
 

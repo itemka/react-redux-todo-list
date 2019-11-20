@@ -1,43 +1,33 @@
-import React from 'react';
+import React, {useState} from 'react';
 import css from './TodoListTitle.module.css';
 import button from './../../Button/Button.module.css';
 
-class TodoListTitle extends React.Component {
-    state = {
-        editMode: false,
-        title: this.props.title
+const TodoListTitle = (props) => {
+    let [editMode, setEditMode] = useState(false);
+    let [title, setTitle] = useState(props.title);
+    let changeTitle = e => setTitle(e.currentTarget.value);
+    let deactivateEditMode = () => {
+        setEditMode(false);
+        props.changeTodoLIstTitle(title);
     };
-    changeTitle = e => {
-        this.setState({title: e.currentTarget.value})
-    };
-    deactivateEditMode = () => {
-        this.setState({editMode: false});
-        this.props.changeTodoLIstTitle(this.state.title);
-    };
-    activateEditMode = () => {
-        this.setState({editMode: true});
-    };
-    render = () => {
-        return (
+    let activateEditMode = () => setEditMode(true);
+    return (
+        <div>
+            <button className={button.button} onClick={props.deleteListTask}>X</button>
             <div>
-                <div>
-                    <button className={button.button} onClick={this.props.deleteListTask}>X</button>
-                </div>
-                <div>
-                    <h3 className={`${css.title} ${css.center}`}>
-                        {this.state.editMode
-                            ? <input onBlur={this.deactivateEditMode}
-                                     onChange={this.changeTitle}
-                                     type="text"
-                                     autoFocus={true}
-                                     value={this.state.title}/>
-                            : <span onClick={this.activateEditMode}>{this.props.title}</span>}
-                    </h3>
-                </div>
+                <h3 className={`${css.title} ${css.center}`}>
+                    {editMode
+                        ? <input onBlur={deactivateEditMode}
+                                 onChange={changeTitle}
+                                 type="text"
+                                 autoFocus={true}
+                                 value={title}/>
+                        : <span onClick={activateEditMode}>{props.title}</span>}
+                </h3>
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 export default TodoListTitle;
 

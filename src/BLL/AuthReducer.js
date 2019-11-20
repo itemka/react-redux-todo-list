@@ -18,7 +18,6 @@ export const checkUserDataThunkCreator = () => async dispatch => {
         let login = responseData.data.login;
         dispatch(setUserData(email, userId, login, true));
     }
-
 };
 export const logInThunkCreator = (email, password, rememberMe, isAuth) => async dispatch => {
     if (email === `test@gmail.com`) email = `itemka2503@gmail.com`;
